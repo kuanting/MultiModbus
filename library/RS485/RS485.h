@@ -1,0 +1,75 @@
+#pragma once
+//
+//    FILE: RS485.h
+//  AUTHOR: Rob Tillaart
+//    DATE: 30-okt-2017
+// VERSION: 0.5.1
+// PURPOSE: Arduino library for RS485 modules
+//     URL: https://github.com/RobTillaart/RS485
+
+
+#include "Arduino.h"
+#include "ASCII_CONTROL.h"
+
+#define RS485_LIB_VERSION        (F("0.5.1"))
+
+
+class RS485 : public Stream
+{
+public:
+  RS485(Stream * stream, uint8_t sendPin, uint8_t deviceID = 0);
+
+  uint8_t  getDeviceID();
+
+
+  //      Stream interface
+  int     available();
+  int     read();
+  int     peek();
+  void    flush();
+
+
+  //      Write
+  size_t  write(uint8_t c);
+  size_t  write(char * array, uint8_t length);  //  wrapper
+  size_t  write(uint8_t * array, uint8_t length);
+
+
+  //      Mode functions
+  inline void setTXmode() { digitalWrite(_sendPin, HIGH); };
+  inline void setRXmode() { digitalWrite(_sendPin, LOW); };
+  uint8_t     getMode()   { return digitalRead(_sendPin) == HIGH; };
+
+
+  //  EXPERIMENTAL
+  //  - in a derived class?
+  //  - use at own risk
+  //  send ASCII encoded messages from one master to multiple clients.
+  //       msg[] = 32..127
+  //       len   =  1.. 48 (internal receive buffer is 50)
+  size_t   send(uint8_t receiverID, uint8_t msg[], uint8_t len);
+  bool     receive(uint8_t &senderID, uint8_t msg[], uint8_t &len);
+
+  //  EXPERIMENTAL
+  size_t   send(uint8_t receiverID, char msg[], uint8_t len);
+  bool     receive(uint8_t &senderID, char msg[], uint8_t &len);
+
+  //  EXPERIMENTAL
+  void     setMicrosPerByte(uint16_t mpb) { _microsPerByte = mpb; };
+  uint16_t getMicrosPerByte() { return _microsPerByte; };
+
+
+private:
+  Stream   * _stream;
+  uint8_t  _sendPin       = 0;
+  uint8_t  _deviceID      = 0;
+  uint16_t _microsPerByte = 1100;
+
+  //       EXPERIMENTAL
+  uint8_t _bidx = 0;
+  uint8_t _buffer[50];  //  internal receive buffer
+};
+
+
+//  -- END OF FILE --
+
