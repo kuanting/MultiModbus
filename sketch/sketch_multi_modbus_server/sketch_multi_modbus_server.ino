@@ -5,7 +5,12 @@
 #define RS485_BAUD_RATE 19200
 #define MODBUS_DEVICE_ID 1
 
-const uint8_t sendPin  = -1;  // TTL 485 module don't need sendPin
+// TTL 485 v2.0 module don't need sendPin (enablePin) 
+// https://jin-hua.com.tw/webc/html/product/show.aspx?num=35141
+const uint8_t sendPin  = -1;  
+// The TTL to RS485 module needs to assign an enable pin
+// https://www.taiwaniot.com.tw/product/ttl-to-rs485rs422-max485-module/
+// const uint8_t sendPin  = 9;
 
 RS485 rs485(&Serial1, sendPin);  // Server
 ModbusRTUServer modbus_server(rs485); // Server is listening on Serial1
