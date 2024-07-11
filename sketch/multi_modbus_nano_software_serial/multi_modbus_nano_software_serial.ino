@@ -36,7 +36,24 @@ void setup() {
   }
 
   // configure a single coil at address 0x00, Modbus client will start to read/write from 0x01
-  modbus_server.configureCoils(0x00, 1);
+  // Write serial numbers to the Coils, Discrete Inputs, Registers, 
+  /*
+  modbus_server.configureCoils(0x00, 100);
+  for (int i=0; i<100; i++) {
+    modbus_server.coilWrite(i, i);
+  }
+  modbus_server.configureDiscreteInputs(0x00, 100);
+  for (int i=0; i<100; i++) {
+    modbus_server.discreteInputWrite(i, i);
+  }
+  modbus_server.configureHoldingRegisters(0, 100);
+  for (int i=0; i<100; i++) {
+    modbus_server.holdingRegisterWrite(i, i);
+  }
+  modbus_server.configureInputRegisters(0, 100);
+  for (int i=0; i<100; i++) {
+    modbus_server.inputRegisterWrite(i, i);
+  }*/
   
   Serial.print("MultiModbus is ready! Device ID is ");
   Serial.println(MODBUS_DEVICE_ID);
