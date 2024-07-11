@@ -1,4 +1,8 @@
+// This example shows how to use MultiModbus with SoftwareSerial on Arduino NANO
+// It creates a server with 10 Coils, 10 Discrete Inputs, 10 Holding Registers and 10 Input Registers
+// A user can use other Modbus tools to communicate with the server
 // Author: Kuan-Ting Lai
+
 #include <RS485.h>    // https://github.com/RobTillaart/RS485
 #include <MultiModbus.h>
 #include <SoftwareSerial.h>
@@ -36,24 +40,23 @@ void setup() {
   }
 
   // configure a single coil at address 0x00, Modbus client will start to read/write from 0x01
-  // Write serial numbers to the Coils, Discrete Inputs, Registers, 
-  /*
-  modbus_server.configureCoils(0x00, 100);
-  for (int i=0; i<100; i++) {
-    modbus_server.coilWrite(i, i);
+  // Create 10 data write serial numbers for Coils, Discrete Inputs, Registers, 
+  modbus_server.configureCoils(0x00, 10); // 1-bit, read/write
+  for (int i=0; i<10; i++) {
+    modbus_server.coilWrite(i, 0);
   }
-  modbus_server.configureDiscreteInputs(0x00, 100);
-  for (int i=0; i<100; i++) {
-    modbus_server.discreteInputWrite(i, i);
+  modbus_server.configureDiscreteInputs(0x00, 10); // 1-bit, read only
+  for (int i=0; i<10; i++) {
+    modbus_server.discreteInputWrite(i, i % 2);
   }
-  modbus_server.configureHoldingRegisters(0, 100);
-  for (int i=0; i<100; i++) {
+  modbus_server.configureHoldingRegisters(0, 10); // 16-bit, read only
+  for (int i=0; i<10; i++) {
     modbus_server.holdingRegisterWrite(i, i);
   }
-  modbus_server.configureInputRegisters(0, 100);
-  for (int i=0; i<100; i++) {
+  modbus_server.configureInputRegisters(0, 10); // 16-bit read/write
+  for (int i=0; i<10; i++) {
     modbus_server.inputRegisterWrite(i, i);
-  }*/
+  }
   
   Serial.print("MultiModbus is ready! Device ID is ");
   Serial.println(MODBUS_DEVICE_ID);
@@ -67,7 +70,19 @@ void loop() {
   // poll for Modbus RTU requests
   packetReceived = modbus_server.poll();
   if(packetReceived) {
-    int coilValue = modbus_server.coilRead(0x00);
-    Serial.println(coilValue);
+    int value;
+    Serial.println("Coil values:");
+    for (int i=0; i<10; i++) {
+      value = modbus_server.coilRead(i);
+      Serial.print(value);
+      Serial.print(", ");
+    }
+    Serial.println("\nRegister values");
+    for (int i=0; i<10; i++) {
+      value = modbus_server.inputRegisterRead(i);
+      Serial.print(value);
+      Serial.print(", ");
+    }
+    Serial.println("");
   }
 }
