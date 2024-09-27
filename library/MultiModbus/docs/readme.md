@@ -1,17 +1,14 @@
-# Arduino Modbus Library
+# MultiModbus Library
 
-This library implements the [Modbus protocol](https://en.wikipedia.org/wiki/Modbus) over two different types of transport: serial communication over RS485 with RTU (Remote Terminal Unit) or Ethernet and WiFi communication with TCP protocol. There are a few differences in the APIs depending on the transport, but the majority of the functions are the same for both.
-Modbus is also a client server protocol where Client = master and Server = slave in Modbus terminilogy; we suggest to read some papers about this protocol if you don't have any former experience because it is based heavily on some formal conventions.
+MultiModbus supports multiple Modbus servers/clients on one board. Modbus messages are exchanged over RS-485 wires, requiring a MAX485 IC for each channel to convert the RS485 signal to a UART. 
+MultiModbus leverages the ArduinoModbus RTU class in [ArduinoModbus](https://github.com/arduino-libraries/ArduinoModbus) and [Robert Tillaart's RS485](https://github.com/RobTillaart/RS485) to enable using different hardware/software serial ports. In this way, our library can run multiple Modbus servers/clients on one board. 
 
-We have organized this reference so that you find the common functions of both transports together and only the transport related functions are given individually. As a rule of thumb, RTU communication is multipoint and therefore the ID of the unit involved in the communication needs to be specified. TCP is point to point using the IP address and therefore there is no need for an ID in the parameters.
-
-The library is available in our Library Manager; it is compatible with our [MKR RS485 Shield](https://store.arduino.cc/products/arduino-mkr-485-shield) and with our network enabled products like the [Ethernet shield](https://store-usa.arduino.cc/products/arduino-ethernet-shield-2), the MKR family of boards and the [Arduino UNO WiFi Rev 2](https://store.arduino.cc/products/arduino-uno-wifi-rev2) just to name a few.
-
-To use this library:
-
+To use this library, install [Robert Tillaart's RS485](https://github.com/RobTillaart/RS485) first, and then include the files below:
 ```
-#include <ArduinoModbus.h>
+#include <RS485.h>
+#include <MultiModbus.h>
 ```
+More examples can be found on []()
 
 ## Further readings
 
