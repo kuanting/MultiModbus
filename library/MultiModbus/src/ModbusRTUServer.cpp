@@ -29,6 +29,7 @@ extern "C" {
 
 ModbusRTUServer::ModbusRTUServer(RS485& rs485) : _rs485(&rs485)
 {
+  _bAddrMapping = false;
 }
 
 ModbusRTUServer::~ModbusRTUServer()
@@ -61,8 +62,19 @@ int ModbusRTUServer::poll()
   int requestLength = modbus_receive(_mb, request);
 
   if (requestLength > 0) {
+    if (_bAddrMapping) {
+      addressMapping(request);
+    }
     modbus_reply(_mb, request, requestLength, &_mbMapping);
     return 1;
   }
   return 0;
+}
+
+void ModbusRTUServer::setAddrMapping(bool val) {
+  _bAddrMapping = val;
+}
+
+void ModbusRTUServer::addressMapping(unsigned char request[])
+{
 }

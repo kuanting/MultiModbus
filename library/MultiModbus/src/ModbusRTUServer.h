@@ -45,8 +45,15 @@ public:
    */
   virtual int poll();
 
-private:
+  /*
+   * Enable/Disable custom address mapping
+  */
+  void setAddrMapping(bool);
+  virtual void addressMapping(unsigned char request[]);
+
+protected:
   RS485* _rs485;
+  bool _bAddrMapping;
 };
 
 #endif
