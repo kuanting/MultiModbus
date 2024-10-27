@@ -63,7 +63,7 @@ int ModbusRTUServer::poll()
 
   if (requestLength > 0) {
     if (_bAddrMapping) {
-      addressMapping(request);
+      addrMapping(request);
     }
     modbus_reply(_mb, request, requestLength, &_mbMapping);
     return 1;
@@ -75,6 +75,6 @@ void ModbusRTUServer::setAddrMapping(bool val) {
   _bAddrMapping = val;
 }
 
-void ModbusRTUServer::addressMapping(unsigned char request[])
+void ModbusRTUServer::addrMapping(unsigned char request[])
 {
 }

@@ -49,7 +49,7 @@ public:
    * Enable/Disable custom address mapping
   */
   void setAddrMapping(bool);
-  virtual void addressMapping(unsigned char request[]);
+  virtual void addrMapping(unsigned char request[]);
 
 protected:
   RS485* _rs485;
